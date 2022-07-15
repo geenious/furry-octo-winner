@@ -1,0 +1,32 @@
+{
+  "name": "simplygoodwork/craft-weather",
+  "description": "Simple weather retrieval plugin powered by the Open Weather Map API",
+  "type": "craft-plugin",
+  "keywords": ["weather"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Simply Good Work",
+      "homepage": "https://simplygoodwork.com"
+    }
+  ],
+  "support": {
+    "email": "dev@simplygoodwork.com",
+    "issues": "https://github.com/developer/repo/issues?state=open",
+    "source": "https://github.com/developer/repo",
+    "docs": "https://github.com/developer/repo/blob/master/README.md"
+  },
+  "require": {
+    "craftcms/cms": "^4.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "simplygoodwork\\weather\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Weather",
+    "handle": "weather",
+    "class": "simplygoodwork\\weather\\WeatherPlugin"
+  }
+}

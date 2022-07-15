@@ -1,0 +1,8 @@
+{% import '_includes/forms.twig' as forms %}
+
+{{ forms.textField({
+  first: true,
+  label: 'Open Weather API Key',
+  name: 'apiKey',
+  value: settings.apiKey
+}) }}

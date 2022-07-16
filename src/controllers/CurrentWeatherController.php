@@ -5,9 +5,8 @@ namespace simplygoodwork\weather\controllers;
 use Craft;
 use craft\web\Controller;
 use GuzzleHttp;
-use yii\web\BadRequestHttpException;
 use yii\web\Response;
-use craft\cache\DbCache;
+use simplygoodwork\weather\WeatherPlugin;
 
 class CurrentWeatherController extends Controller
 {
@@ -26,15 +25,20 @@ class CurrentWeatherController extends Controller
     $value = $cache->get($key);
 
     if ($value === false) {
+
+      $apiKey = WeatherPlugin::$plugin->settings->apiKey;
+
       $client = new GuzzleHttp\Client();
+
       $response = $client->request('GET', 'https://api.openweathermap.org/data/2.5/weather', [
         'query' => [
           'lat' => '28.0268742',
           'lon' => '-97.1158471',
           'units' => 'imperial',
-          'appid' => 'f71ca27686d3b702743df02a72e6914b'
+          'appid' => $apiKey,
         ]
       ]);
+
       $responseBody = json_decode($response->getBody(), true);
 
       $cache->set($key, $responseBody, 600);

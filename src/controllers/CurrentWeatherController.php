@@ -15,9 +15,16 @@ class CurrentWeatherController extends Controller
     $this->requireSiteRequest();
 
     $client = new GuzzleHttp\Client();
-    $response = $client->request('GET', 'https://api.openweathermap.org/data/2.5/weather?lat=28.0268742&lon=-97.1158471&units=imperial&appid=f71ca27686d3b702743df02a72e6914b');
+    $response = $client->request('GET', 'https://api.openweathermap.org/data/2.5/weather', [
+      'query' => [
+        'lat' => '28.0268742',
+        'lon' => '-97.1158471',
+        'units' => 'imperial',
+        'appid' => 'f71ca27686d3b702743df02a72e6914b'
+      ]
+    ]);
     $responseBody = json_decode($response->getBody(), true);
 
-    return $this->asJson([$responseBody]);
+    return $this->asJson($responseBody);
   }
 }

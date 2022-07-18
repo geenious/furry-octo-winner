@@ -3,6 +3,7 @@
 namespace simplygoodwork\weather\controllers;
 
 use Craft;
+use craft\helpers\App;
 use craft\web\Controller;
 use GuzzleHttp;
 use yii\web\Response;
@@ -17,6 +18,7 @@ class CurrentWeatherController extends Controller
   {
     $this->requireSiteRequest();
 
+    $settings = WeatherPlugin::$plugin->settings;
     // Cache Key
     $key = 'currrent-weather';
 
@@ -24,18 +26,19 @@ class CurrentWeatherController extends Controller
 
     $value = $cache->get($key);
 
+    $unit = [
+      'unit' => $settings->units
+    ];
+
     if ($value === false) {
-
-      $apiKey = WeatherPlugin::$plugin->settings->apiKey;
-
       $client = new GuzzleHttp\Client();
 
       $response = $client->request('GET', 'https://api.openweathermap.org/data/2.5/weather', [
         'query' => [
-          'lat' => '28.0268742',
-          'lon' => '-97.1158471',
-          'units' => 'imperial',
-          'appid' => $apiKey,
+          'lat' => $settings->lat,
+          'lon' => $settings->lon,
+          'units' => $settings->units,
+          'appid' => App::parseEnv($settings->apiKey),
         ]
       ]);
 
@@ -43,9 +46,9 @@ class CurrentWeatherController extends Controller
 
       $cache->set($key, $responseBody, 600);
 
-      return $this->asJson($responseBody);
+      return $this->asJson(array_merge($unit, $responseBody));
     }
 
-    return $this->asJson($value);
+    return $this->asJson(array_merge($unit, $value));
   }
 }

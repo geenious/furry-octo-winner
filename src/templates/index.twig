@@ -6,6 +6,8 @@
 
 {% block content %}
 
+<form>
+
   {{ forms.textField({
     first: false,
     label: 'Latitude',
@@ -20,17 +22,6 @@
     value: ''
   }) }}
 
-  {% set options = [
-    {
-      key: 'imperial',
-      option: 'Imperial'
-    },
-    {
-      key: 'metric',
-      option: 'Metric',
-    }
-  ] %}
-
   {{ forms.selectField({
     first: false,
     label: 'Unit of Measurement',
@@ -42,5 +33,16 @@
     }
   }) }}
 
+  {{ forms.textField({
+    first: false,
+    label: 'Cache Duration',
+    name: 'cache',
+    type: 'number',
+    min: 60,
+    value: '',
+    instructions: 'Time in seconds. 300 would save data for 5 minutes. Data will be cached for a minumum of 60 seconds.'
+  }) }}
+
+</form>
 
 {% endblock %}

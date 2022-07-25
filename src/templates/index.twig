@@ -2,46 +2,50 @@
 
 {% import '_includes/forms.twig' as forms %}
 
-{% set title = "Weather" %}
+{% set title = "Weather Options" %}
 
 {% block content %}
 
-<form>
+<form method="post" action="">
+  {{ csrfInput() }}
+  {{ forms.hidden({
+    name: 'action',
+    value: 'weather/settings/save-settings'
+  })}}
 
   {{ forms.textField({
-    first: false,
+    first: true,
     label: 'Latitude',
     name: 'lat',
-    value: ''
+    required: true
   }) }}
 
   {{ forms.textField({
-    first: false,
     label: 'Longitude',
     name: 'lon',
-    value: ''
+    required: true
   }) }}
 
   {{ forms.selectField({
-    first: false,
     label: 'Unit of Measurement',
     name: 'units',
-    value: '',
     options: {
       imperial: 'Imperial',
       metric: 'Metric'
-    }
+    },
+    required: true
   }) }}
 
   {{ forms.textField({
-    first: false,
     label: 'Cache Duration',
     name: 'cache',
     type: 'number',
     min: 60,
-    value: '',
-    instructions: 'Time in seconds. 300 would save data for 5 minutes. Data will be cached for a minumum of 60 seconds.'
+    instructions: 'Time in seconds. 300 would save data for 5 minutes. Data will be cached for a minumum of 60 seconds.',
+    required: true
   }) }}
+
+  <input type="submit" class="submit btn" value="Save" />
 
 </form>
 

@@ -12,33 +12,46 @@
 namespace simplygoodwork\weather;
 
 use Craft;
-use craft\base\Model;
 use craft\base\Plugin;
-use craft\services\Plugins;
-use craft\helpers\UrlHelper;
-use simplygoodwork\weather\models\Settings;
+use craft\web\twig\variables\CraftVariable;
+use simplygoodwork\weather\models\SettingsModel;
+use simplygoodwork\weather\services\WeatherService;
+use simplygoodwork\weather\variables\WeatherVariable;
+use yii\base\Event;
 
 class WeatherPlugin extends Plugin
 {
     public static WeatherPlugin $plugin;
 
+    public static function config(): array
+    {
+        return [
+            'components' => [
+                'weather' => ['class' => WeatherService::class]
+            ]
+        ];
+    }
+
     public string $schemaVersion = '1.0.0';
 
     public bool $hasCpSettings = true;
 
-    public bool $hasCpSection = false;
+    public bool $hasCpSection = true;
 
     public function init()
     {
         parent::init();
         self::$plugin = $this;
 
-        // Custom initialization code goes here...
+        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
+            $variable = $event->sender;
+            $variable->set('weather', WeatherVariable::class);
+        });
     }
 
-    protected function createSettingsModel(): ?Model
+    protected function createSettingsModel(): SettingsModel
     {
-        return new Settings();
+        return new SettingsModel();
     }
 
     protected function settingsHtml(): ?string

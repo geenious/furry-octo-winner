@@ -39,7 +39,7 @@ class WeatherService extends Component
     $weatherModel->iconUrl = $iconUrl;
     $weatherModel->temp = $responseBody['main']['temp'];
     $weatherModel->dateUpdated = date('d-m-Y H:i:s', $responseBody['dt']);
-    $weatherModel->unit = 'imperial';
+    $weatherModel->unit = ($queryParams['query']['units'] == 'imperial' ? 'F' : 'C');
 
     return $weatherModel;
   }

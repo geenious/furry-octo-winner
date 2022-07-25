@@ -4,6 +4,8 @@
 
 {% set title = "Weather Options" %}
 
+{% set settings = craft.weather.getSettings() %}
+
 {% block content %}
 
 <form method="post" action="">
@@ -17,18 +19,21 @@
     first: true,
     label: 'Latitude',
     name: 'lat',
+    value: settings.lat,
     required: true
   }) }}
 
   {{ forms.textField({
     label: 'Longitude',
     name: 'lon',
+    value: settings.lon,
     required: true
   }) }}
 
   {{ forms.selectField({
     label: 'Unit of Measurement',
     name: 'units',
+    value: settings.units,
     options: {
       imperial: 'Imperial',
       metric: 'Metric'
@@ -41,6 +46,7 @@
     name: 'cache',
     type: 'number',
     min: 60,
+    value: settings.cache,
     instructions: 'Time in seconds. 300 would save data for 5 minutes. Data will be cached for a minumum of 60 seconds.',
     required: true
   }) }}

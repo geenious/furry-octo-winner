@@ -6,8 +6,9 @@ use Craft;
 use craft\helpers\App;
 use craft\base\Component;
 use GuzzleHttp;
-use simplygoodwork\weather\models\WeatherModel;
 use simplygoodwork\weather\WeatherPlugin;
+use simplygoodwork\weather\models\WeatherModel;
+use simplygoodwork\weather\models\LocationModel;
 use simplygoodwork\weather\records\WeatherRecord;
 
 class WeatherService extends Component
@@ -74,5 +75,19 @@ class WeatherService extends Component
     }
 
     $weatherSettings->save();
+  }
+
+  public function getSettings()
+  {
+    $locationModel = new LocationModel;
+
+    $locationRecord = WeatherRecord::findOne(1);
+
+    $locationModel->lat = $locationRecord->lat;
+    $locationModel->lon = $locationRecord->lon;
+    $locationModel->units = $locationRecord->units;
+    $locationModel->cache = $locationRecord->cache;
+
+    return $locationModel;
   }
 }

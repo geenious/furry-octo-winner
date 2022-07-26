@@ -24,6 +24,8 @@ class SettingsController extends Controller
 
     WeatherPlugin::$plugin->weather->saveSettings($data);
 
+    Craft::$app->getSession()->setNotice('Settings saved.');
+
     return $this->redirectToPostedUrl();
   }
 }
